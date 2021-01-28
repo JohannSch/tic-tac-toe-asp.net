@@ -15,5 +15,10 @@ namespace tic_tac_toe.Controllers
 
             return View("Index");
         }
+
+        //public JsonResult MakeStep(string cellLocation)
+        //{
+        //    JsonResult js = new JsonResult();
+        //}
     }
 }

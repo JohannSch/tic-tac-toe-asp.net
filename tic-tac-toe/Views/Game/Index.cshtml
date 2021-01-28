@@ -6,11 +6,20 @@
 <head>
     <meta charset="utf-8" />
     <title>Tic-Tac-Toe</title>
+    <link rel="shortcut icon" href="~/icons/tic-tac-icon.jpg" type="image/png">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body id="home">
     <div class="main">
+        <nav class="navbar">
+            <div class="input-group-prepend">
+                <p>who will go first?</p>
+                <button class="btn btn-outline-secondary person" type="button">Computer</button>
+                <button class="btn btn-outline-secondary computer" type="button">Person</button>
+            </div>
+        </nav>
+
         <div class="main_wins-table">
 
         </div>
@@ -19,6 +28,9 @@
             @Html.Partial("GameTable.cshtml", Game.Cells)
         </div>
     </div>
+
+    @Html.HiddenFor(x => Game.IsComputerFirst);
+    @Html.HiddenFor(x => Game.CurrentlyPressedButton)
 
     <script defer src="~/lib/jquery/dist/jquery.min.js"></script>
     <script defer src="~/js/site.js"></script>

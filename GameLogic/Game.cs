@@ -11,6 +11,8 @@ namespace GameLogic
     static public class Game
     {
         static public Cell[,] Cells;
+        static public bool? IsComputerFirst;
+        static public string CurrentlyPressedButton;
 
         static public void Initialize()
         {
