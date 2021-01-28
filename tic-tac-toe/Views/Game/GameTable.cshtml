@@ -1,0 +1,21 @@
+﻿@using GameLogic.Enums;
+@model GameLogic.GameObjects.Cell[,];
+
+@for (int x = 0; x < 3; ++x)
+{
+    @for (int y = 0; y < 3; ++y)
+    {
+        <div class="cell @Model[x, y].CellLocation.ToString()" style="grid-row: @(x + 1)/@(x + 2); grid-column: @(y + 1)/@(y + 2);">
+            @if (Model[x, y].CellState == CellState.Emptiness)
+            {
+                <button type="button" class="btn btn-outline-secondary"></button>
+            } else if (Model[x, y].CellState == CellState.O)
+            {
+                <button type="button" class="btn btn-outline-secondary">O</button>
+            } else if (Model[x, y].CellState == CellState.X)
+            {
+                <button type="button" class="btn btn-outline-secondary">X</button>
+            }
+        </div>
+    }
+}

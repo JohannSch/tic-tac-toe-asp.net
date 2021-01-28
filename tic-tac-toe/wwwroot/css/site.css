@@ -1,0 +1,37 @@
+﻿html,
+body,
+.main,
+.main_wins-table,
+.main_game-table {
+    height: 100%;
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+}
+
+.main {
+    display: grid;
+    grid-template-rows: 1fr 1fr 450px 1fr 1fr;
+    grid-template-columns: 1fr 450px 1fr 450px 1fr;
+}
+
+.main_wins-table {
+    grid-row: 3/4;
+    grid-column: 2/3;
+    background-color: blue;
+}
+
+.main_game-table {
+    grid-row: 3/4;
+    grid-column: 4/5;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.btn-outline-secondary {
+    width: 100%;
+    height: 100%;
+}
