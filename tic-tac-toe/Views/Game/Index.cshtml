@@ -1,5 +1,4 @@
-﻿@using GameLogic
-@using static GameLogic.Game;
+﻿@using GameLogic;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +14,17 @@
         <nav class="navbar">
             <div class="input-group-prepend">
                 <p>who will go first?</p>
-                <button class="btn btn-outline-secondary person" type="button">Computer</button>
-                <button class="btn btn-outline-secondary computer" type="button">Person</button>
+                <button class="btn btn-outline-secondary person" type="button">Person</button>
+                <button class="btn btn-outline-secondary computer" data-isComputerFirst="0" type="button">Computer</button>
+                <button type="button" class="btn btn-outline-secondary restart">&#8635</button>
             </div>
         </nav>
 
         <div class="main_wins-table">
+
+        </div>
+        
+        <div class="result">
 
         </div>
 
@@ -28,9 +32,6 @@
             @Html.Partial("GameTable.cshtml", Game.Cells)
         </div>
     </div>
-
-    @Html.HiddenFor(x => Game.IsComputerFirst);
-    @Html.HiddenFor(x => Game.CurrentlyPressedButton)
 
     <script defer src="~/lib/jquery/dist/jquery.min.js"></script>
     <script defer src="~/js/site.js"></script>

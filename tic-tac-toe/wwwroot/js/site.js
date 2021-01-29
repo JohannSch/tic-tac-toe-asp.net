@@ -1,33 +1,29 @@
 ﻿$().ready(() => {
     $(".cellButton").click((e) => {
-        $('#CurrentlyPressedButton').val(
-            e.target.getAttribute('data-location'));
+        e.target.setAttribute('disabled', 'disabled');
     });
 
-    function blockCells(isGameActive) {
-        if (isGameActive) {
-            $('.cell').children().removeAttr('disabled');
-        } else {
-            $('.cell').children().attr('disabled', 'disabled');
-        }
-    }
-
     function lockSelectionButtons(itemClass) {
-        $(itemClass).css('background-color', 'red');
+        $(itemClass).css('background-color', 'green');
         $('.computer').attr('disabled', 'disabled');
         $('.person').attr('disabled', 'disabled');
-        blockCells(true);
+        blockUnblockCells(true);
     }
 
     $('.person').click((e) => {
         lockSelectionButtons('.person');
-        $('#IsComputerFirst').val(0);
     });
 
     $('.computer').click((e) => {
         lockSelectionButtons('.computer');
-        $('#IsComputerFirst').val(1);
+        e.target.setAttribute('data-isComputerFirst', '1');
+        blockUnblockUnusedCells(false);
+        computerGo();
     });
 
-    blockCells(false);
+    $('.restart').click((e) => {
+        location.reload();
+    });
+
+    blockUnblockCells(false);
 });

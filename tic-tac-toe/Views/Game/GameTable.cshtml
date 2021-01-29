@@ -1,32 +1,120 @@
-﻿@using GameLogic
-@using GameLogic.Enums;
+﻿@using GameLogic.Enums;
 @model GameLogic.GameObjects.Cell[,];
 
 @for (int x = 0; x < 3; ++x)
 {
     @for (int y = 0; y < 3; ++y)
     {
-        <div class="cell" style="grid-row: @(x + 1)/@(x + 2); grid-column: @(y + 1)/@(y + 2);">
+        <div class="cell new" style="grid-row: @(x + 1)/@(x + 2); grid-column: @(y + 1)/@(y + 2);">
             @if (Model[x, y].CellState == CellState.Emptiness)
             {
-                <button type="button" class="btn btn-outline-secondary cellButton" data-location="@Model[x, y].CellLocation.ToString()"></button>
+                <button type="button"
+                        class="btn btn-outline-secondary cellButton"
+                        onclick="javascript: makeStep(this);"
+                        data-location="@Model[x, y].CellLocation.ToString()">
+                </button>
             }
         </div>
     }
 }
 
 <script>
-    function makeStep() {
+    function makeStep(obj) {
+        let isComFirst = isComputerFirst();
+
         $.ajax({
-            url: @Url.Action("MakeStep", "Game", Game.CurrentlyPressedButton),
+            url: `/Game/MakeStep?cellLocation=${obj.getAttribute('data-location')}&isComputerFirst=${isComFirst}`,
             error: (jqXHR, exception) => {
                 console.log(jqXHR);
                 console.log(exception);
             },
-            success: () => {
-                console.log();
+            success: (data) => {
+                setImageToCell(data);
+
+                if (data.isWin === true) {
+                    blockUnblockCells(false);
+                    gameOver(data.message);
+                } else if (data.isDraw === true) {
+                    blockUnblockCells(false);
+                    gameOver('Draw');
+                } else {
+                    blockUnblockUnusedCells(false);
+                    computerGo();
+                }
             },
             dataType: "json"
         });
     }
+
+    function computerGo() {
+        let isComFirst = isComputerFirst();
+
+        $.ajax({
+            url: `/Game/ComputerGo?isComputerFirst=${isComFirst}`,
+            error: (jqXHR, exception) => {
+                console.log(jqXHR);
+                console.log(exception);
+            },
+            success: (data) => {
+                setImageToCell(data);
+
+                if (data.isWin === true) {
+                    blockUnblockCells(false);
+                    gameOver(data.message);
+                } else if (data.isDraw === true) {
+                    blockUnblockCells(false);
+                    gameOver('Draw');
+                } else {
+                    $(`button[data-location=${data.cellLocation}]`).attr('disabled', 'disabled');
+                    blockUnblockUnusedCells(true);
+                }
+            },
+            dataType: "json"
+        });
+    }
+
+    function setImageToCell(data) {
+        if (data.cellState === 1) {
+            $(`button[data-location=${data.cellLocation}]`).css('background-color', 'grey');
+            $(`button[data-location=${data.cellLocation}]`).html('&#10060');
+            $(`button[data-location=${data.cellLocation}]`).removeClass('new');
+        } else if (data.cellState === 2) {
+            $(`button[data-location=${data.cellLocation}]`).html('&#9679');
+            $(`button[data-location=${data.cellLocation}]`).removeClass('new');
+        }
+    }
+
+    function isComputerFirst() {
+        if ($('.computer').attr('data-isComputerFirst') === '1')
+            return true;
+        else
+            return false;
+    }
+
+    function blockUnblockUnusedCells(isGameActive) {
+        if (isGameActive) {
+            $('.new').children().removeAttr('disabled');
+        } else {
+            $('.new').children().attr('disabled', 'disabled');
+        }
+    }
+
+    function gameOver(message) {
+        if (message === 'you won!') {
+            $('.cell').css('background-color', 'green');
+        } else if (message === 'you lose!') {
+            $('.cell').css('background-color', 'red');
+        } else {
+            $('.cell').css('background-color', 'orange');
+        }
+    }
+
+    function blockUnblockCells(isGameActive) {
+        if (isGameActive) {
+            $('.cell').children().removeAttr('disabled');
+        } else {
+            $('.cell').children().attr('disabled', 'disabled');
+        }
+    }
+
 </script>
