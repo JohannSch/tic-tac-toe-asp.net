@@ -20,7 +20,8 @@ span {
 .main_wins-table {
     grid-row: 3/4;
     grid-column: 2/3;
-    background-color: blue;
+
+    position: relative;
 }
 
 .main_game-table {
@@ -64,4 +65,34 @@ p {
     font-family: 'Yusei Magic', sans-serif;
     font-size: large;
     margin: 0 20px 0 0;
+}
+
+.gameList {
+    height: 10%;
+}
+
+.disable:active {
+    display: none !important;
+}
+
+.Steps {
+    width: 450px;
+    height: 450px;
+    background-color: white;
+    border: 1px solid #6c757d;
+}
+
+.step-row {
+    height: 45px;
+    font-family: 'Yusei Magic', sans-serif;
+    font-size: large;
+    text-align: left;
+    padding-left: 35%;
+}
+
+.close-button {
+    width: 45px;
+    height: 45px;
+
+    text-align: center;
 }

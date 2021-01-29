@@ -1,0 +1,109 @@
+﻿@using DAL
+
+@{
+    var dbContex = new GameContext();
+
+    var list = dbContex.GameResults.Where(y => y.GameResult != null).OrderByDescending(x => x.Id).Take(10);
+}
+
+@foreach (var element in list)
+{
+    <button type="button" class='btn gameList' value="@element.Id" data-result="@element.GameResult">@element.DateTime</button>
+}
+
+<div class="Steps">
+
+</div>
+
+<button class="close-button btn btn-outline-secondary">&#10006</button>
+
+<script>
+
+    function setColor() {
+        $('.gameList').each((i, e) => {
+            if (e.getAttribute('data-result') === 'Victory') {
+                e.style.backgroundColor = 'green';
+            } else if (e.getAttribute('data-result') === 'loss') {
+                e.style.backgroundColor = 'red';
+            } else {
+                e.style.backgroundColor = 'orange';
+            }
+        });
+    }
+
+    function setDisabledClass(gameResultId) {
+        $('.gameList').each((i, e) => {
+            if (e.value !== gameResultId) {
+                e.classList.add('disable');
+                val = e.value;
+            }
+
+            e.setAttribute('disabled', 'disabled');
+        });
+    }
+
+    function getSteps(gameResultId) {
+        $.ajax({
+            url: `/Game/GetSteps?gameResultId=${gameResultId}`,
+            error: (jqXHR, exception) => {
+                console.log(jqXHR);
+                console.log(exception);
+            },
+            success: (data) => {
+                setDisabledClass(gameResultId);
+                displayStepsWindow(data);
+            },
+            dataType: "json"
+        });
+    }
+
+    function disableStepsWindow() {
+        $('.Steps').css('display', 'none');
+        $('.close-button').css('display', 'none');
+    }
+
+    function displayStepsWindow(data) {
+        $('.Steps').css('display', 'block');
+        $('.Steps').css('position', 'absolute');
+
+        $('.close-button').css('display', 'block');
+        $('.close-button').css('position', 'absolute');
+
+        let position = $('.main_wins-table').position();
+
+        $('.Steps').css('top', `${position.top - position.top}`);
+        $('.Steps').css('left', `${position.left}`);
+
+        $('.close-button').css('top', `${position.top - position.top}`);
+        $('.close-button').css('right', `${position.right}`);
+
+        let child;
+
+        for (let i = 0; i < data.length; ++i) {
+            if ($('.Steps').children().length === 0) {
+                $('.Steps').html(`<div class="step-row">${i + 1}. ${data[i].сharacter}: ${data[i].cell}</div>`);
+                child = $('.Steps').children().last();
+            } else {
+                child.after(`<div class="step-row">${i + 1}. ${data[i].сharacter}: ${data[i].cell}</div>`);
+
+                child = $('.Steps').children().last();
+            }
+        }
+    }
+
+    $('.gameList').click((e) => {
+        getSteps(e.target.value);
+    });
+
+    $('.close-button').click((e) => {
+        disableStepsWindow();
+        $('.Steps').children().remove();
+        $('.gameList').removeAttr('disabled');
+        $('.gameList').each((i, e) => {
+            e.classList.remove('disable');
+        });
+    });
+
+    setColor();
+    disableStepsWindow();
+</script>

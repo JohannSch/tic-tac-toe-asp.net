@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="~/icons/tic-tac-icon.jpg" type="image/png">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body id="home">
     <div class="main">
@@ -21,9 +22,9 @@
         </nav>
 
         <div class="main_wins-table">
-
+            @Html.Partial("WinsTable.cshtml")
         </div>
-        
+
         <div class="result">
 
         </div>
@@ -31,9 +32,8 @@
         <div class="main_game-table">
             @Html.Partial("GameTable.cshtml", Game.Cells)
         </div>
-    </div>
 
-    <script defer src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script defer src="~/js/site.js"></script>
+        <script src="~/js/site.js"></script>
+    </div>
 </body>
 </html>
