@@ -96,3 +96,19 @@ p {
 
     text-align: center;
 }
+
+.cell {
+    position: relative;
+}
+
+.info {
+    font-family: 'Yusei Magic', sans-serif;
+    font-size: larger;
+    width: 45px;
+    height: 45px;
+    position: absolute;
+}
+
+.disable {
+    display: none !important;
+}

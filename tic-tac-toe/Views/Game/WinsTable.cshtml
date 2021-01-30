@@ -75,7 +75,7 @@
         $('.Steps').css('left', `${position.left}`);
 
         $('.close-button').css('top', `${position.top - position.top}`);
-        $('.close-button').css('right', `${position.right}`);
+        $('.close-button').css('right', `${position.right} + ${position.right}`);
 
         let child;
 
@@ -87,8 +87,19 @@
                 child.after(`<div class="step-row">${i + 1}. ${data[i].сharacter}: ${data[i].cell}</div>`);
 
                 child = $('.Steps').children().last();
+
+                if ((i + 1) % 2 === 0) {
+                    if (!child[0].classList.contains('mb-2'))
+                        child[0].classList.add('mb-2');
+                    if (!child[0].classList.contains('bg-light'))
+                        child[0].classList.add('bg-light');
+                    if (!child[0].classList.contains('text-dark'))
+                        child[0].classList.add('text-dark');
+                }
             }
         }
+
+        displayInfoBlocks();
     }
 
     $('.gameList').click((e) => {
@@ -102,7 +113,22 @@
         $('.gameList').each((i, e) => {
             e.classList.remove('disable');
         });
+        $('.info').each((i, e) => {
+            e.classList.add('disable');
+        });
     });
+
+    function displayInfoBlocks() {
+        let cells = $('.cell');
+        let infos = $('.info');
+
+        for (let i = 0; i < cells.length; ++i) {
+            infos[i].style.top = '0px';
+            infos[i].style.left = '1px';
+
+            infos[i].classList.remove('disable');
+        }
+    }
 
     setColor();
     disableStepsWindow();
